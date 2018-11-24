@@ -1,6 +1,7 @@
 <template>
     <div class="home">
         <HomeList></HomeList>
+        <router-view></router-view>
     </div>
 </template>
 

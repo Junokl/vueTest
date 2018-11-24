@@ -11,15 +11,26 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {//vue解决跨域请求的问题
-        '/api':{//小暗号https://m.maizuo.com/v4/api/billboard/home?__t=1542275206367
-            target:'https://m.lagou.com',//目标服务器
+        '/api':{//小暗号
+            target:'https://m.lagou.com',//目标首页服务器https://m.lagou.com
             changeOrigin:true,//是否允许代理
             pathRewrite:{'^/api':""}//匹配请求接口
+        },
+        '/dateil':{//小暗号
+            target:'https://www.lagou.com',//目标详情页服务器https://www.lagou.com
+            changeOrigin:true,//是否允许代理
+            pathRewrite:{'^/dateil':""}//匹配请求接口
+        },
+        '/getcity':{//小暗号
+            target:'https://api-m.mtime.cn',//目标城市服务器https://api-m.mtime.cn
+            changeOrigin:true,//是否允许代理
+            pathRewrite:{'^/getcity':""}//匹配请求接口
         }
+
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

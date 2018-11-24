@@ -1,17 +1,17 @@
 <template>
-  <div id="footer">
+  <div id="footer" >
       <router-link tag='span' 
-      to="/home" :class="curHight=='/home'?'seleted':''">
-      <i class="fa fa-home" aria-hidden="true"></i>职位
+      to="/home" :class="this.$route.path=='/home'?'seleted':''">
+      <i class="fa fa-home" aria-hidden="true" ></i>职位
       </router-link>
       <router-link tag='span' 
-      to="/search" :class="curHight=='/search'?'seleted':''">
-      <i class="fa fa-search" aria-hidden="true"></i>搜索
+      to="/search" :class="this.$route.path=='/search'?'seleted':''">
+      <i class="fa fa-search" aria-hidden="true" ></i>搜索
       </router-link>
-      <router-link tag='span' 
-      to="/my" :class="curHight=='/my'?'seleted':''">
-      <i class="fa fa-user-o" aria-hidden="true"></i>我的
-      </router-link>
+      <span tag='span'  @click='tologin()'
+      to="/my" :class="this.$route.path=='/my/login'?'seleted':''">
+      <i class="fa fa-user-o" aria-hidden="true" ></i>我的
+      </span>
   </div>
 </template>
 
@@ -19,18 +19,42 @@
 
 export default {
   name: 'Footer',
-  components: {
-    // navlist:[{name:'职位',path:'/home'},{name:'搜索',path:'/search'},{name:'我的',path:'/my'}],
-    curHight:'/home'
+  components: {},
+  data(){
+    return{
+      // navlist:[{name:'1',path:'/home'},{name:'2',path:'/search'},{name:'3',path:'/my'}],
+      // curHight:'/home'
+    }
+  },
+  methods:{
+    tologin(){
+      if(localStorage.getItem('islogin')===''){//没登录跳转到登录页面
+        this.$router.push({path:'/my/login'});
+        console.log(localStorage);
+      }
+      else if(localStorage.getItem('islogin')){//登录跳转到个人信息页面
+          this.$router.push({path:'/my/haslogin'});
+          console.log(localStorage);
+      }
+      
+    }
+  },
+  created(){
+    
+  },
+  updated(){
+    
   }
 }
 </script>
 
 <style lang='less' scoped>
 @import '../../styles/mixin.less';
+@import '../../../static/css/font-awesome.css';
 *{margin:0;padding: 0;}
 #footer {
-    width:100%; 
+    // width:100%;
+    .w(375);
     .h(45);
     .lh(45);
     .fs(20);
@@ -40,6 +64,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
+    right:0;
     z-index: 999;
     display:flex;
 

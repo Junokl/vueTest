@@ -1,31 +1,40 @@
 <template>
     <div class="homelist">
         <div class="top">
-            <span>10秒钟定制职位</span>
-            <a href="" class="change">
+            <span>{{this.$store.state.bianjilist}}</span>
+            <router-link tag='span' to='/bianji' class="change">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
-                <span>编辑</span>
-            </a>
+                <span >编辑</span>
+            </router-link>
         </div>
 
         <ul class="jobitems">
-            <li class="jobitem" v-for="(item,index) in joblist" :key='index'> 
+            <li class="jobitem"  
+            v-for="(item,index) in joblist" :key='index' 
+            :data-positionid='item.positionId'
+            > 
+            <a :href ="'https://m.lagou.com/jobs/'+item.positionId+'.html'">
+
                 <img :src="'//www.lgstatic.com/'+item.companyLogo" /> 
                 <div class="conten">
                     <h2 class="title">{{item.companyName}}</h2>
                     <p class="dsc">
-                        <span class='zhiwei'>{{item.positionName}}</span>
+                        <span class='zhiwei'>{{item.positionName}} [ {{item.city}} ]</span>
                         <span class='xinshui'>{{item.salary}}</span>
                     </p>
                     <p class="jobtime">{{item.createTime}}</p>
                 </div>
+            </a>
+                
             </li>
             
         </ul>
-        <p class="more">
+        <p class="more" @click='getJoblist()'>
                 加载更多
         </p>
+        <router-view></router-view>
     </div>
+
 </template>
 <script type="text/javascript">
 
@@ -36,6 +45,7 @@ export default{
         return{
             joblist:[],
             current:0,
+            // positionid:[],
 
         }
     },
@@ -43,28 +53,30 @@ export default{
         getJoblist(){
             this.$axios.get('/api/listmore.json',{params:{
                     pageNo:this.current+1,
-                    pageSize:15
-                    }
-                }
-                )//?pageNo=1&pageSize=15
+                    pageSize:15,
+                }})//?pageNo=1&pageSize=15
             .then((res)=>{
-                // console.log(res.data.content.data.page.result);
+                this.current++;//点击更多时当前页数++
                 for(var i=0;i<res.data.content.data.page.result.length;i++){
                     // this.dateitem=res.data.data.films[i].premiereAt;
                     this.joblist = this.joblist.concat(res.data.content.data.page.result[i]);
+                    // this.positionid = this.positionid.concat(res.data.content.data.page.result[i].positionId);
+                    // console.log(res.data.content.data.page.result[i].positionId);
                     // console.log(this.joblist);
+                    // console.log(this.positionid);
                 }
             })
             .catch((err)=>{
                 console.log(err);
             })
-        }
+        },
     },
     mounted(){
       
     },
     created(){// 发起ajax 请求
         this.getJoblist();
+        // this.toDetail();
     }
 }
       
@@ -73,6 +85,8 @@ export default{
 <style lang='less' scoped>
 @import url('../../../styles/main.less');
 .homelist{
+    max-width:375px;
+
     .top{
         display:flex;
         justify-content:space-between;
